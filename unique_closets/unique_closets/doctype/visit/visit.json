@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-01-05 15:00:06.843285",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "project",
+  "customer",
+  "date",
+  "column_break_4",
+  "work_type",
+  "workshop",
+  "status",
+  "models_section",
+  "models"
+ ],
+ "fields": [
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "default": "Now",
+   "fieldname": "date",
+   "fieldtype": "Datetime",
+   "label": "Appointment Date\\Time"
+  },
+  {
+   "fieldname": "workshop",
+   "fieldtype": "Link",
+   "label": "Workshop",
+   "options": "Workshop"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Unverified\nVerified\nCanceled\nCompleted"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "models_section",
+   "fieldtype": "Section Break",
+   "label": "Models"
+  },
+  {
+   "fieldname": "models",
+   "fieldtype": "Table MultiSelect",
+   "label": "Models",
+   "options": "Visit Model"
+  },
+  {
+   "fieldname": "work_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Work Type",
+   "options": "Work Type",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-01-19 16:02:23.714685",
+ "modified_by": "Administrator",
+ "module": "Unique Closets",
+ "name": "Visit",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

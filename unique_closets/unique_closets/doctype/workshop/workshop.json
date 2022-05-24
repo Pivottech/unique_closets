@@ -1,0 +1,77 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-01-05 15:00:03.789801",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workshop_head",
+  "work_type",
+  "holiday_list",
+  "appointment_duration",
+  "advance_booking_days",
+  "max_appointments_in_day"
+ ],
+ "fields": [
+  {
+   "fieldname": "workshop_head",
+   "fieldtype": "Link",
+   "label": "Workshop Head",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "holiday_list",
+   "fieldtype": "Link",
+   "label": "Holiday List",
+   "options": "Holiday List"
+  },
+  {
+   "fieldname": "appointment_duration",
+   "fieldtype": "Int",
+   "label": "Appointment Duration (In Minutes)"
+  },
+  {
+   "fieldname": "advance_booking_days",
+   "fieldtype": "Data",
+   "label": "Number of days appointments can be booked in advance"
+  },
+  {
+   "fieldname": "max_appointments_in_day",
+   "fieldtype": "Data",
+   "label": "Max Appointments in Day"
+  },
+  {
+   "fieldname": "work_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Work Type",
+   "options": "Work Type",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-01-19 16:05:56.097658",
+ "modified_by": "Administrator",
+ "module": "Unique Closets",
+ "name": "Workshop",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

@@ -1,0 +1,126 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2021-12-25 14:10:37.517198",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "address",
+  "description",
+  "paint_color",
+  "floor_no",
+  "column_break_5",
+  "length",
+  "width",
+  "height",
+  "sqm",
+  "section_break_10",
+  "note",
+  "naming_series"
+ ],
+ "fields": [
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "address",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Address",
+   "options": "Address"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
+  },
+  {
+   "fieldname": "paint_color",
+   "fieldtype": "Color",
+   "label": "Paint Color"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Float",
+   "label": "Length in Meter"
+  },
+  {
+   "fieldname": "width",
+   "fieldtype": "Float",
+   "label": "Width in Meter"
+  },
+  {
+   "fieldname": "height",
+   "fieldtype": "Float",
+   "label": "Height in Meter"
+  },
+  {
+   "fieldname": "sqm",
+   "fieldtype": "Float",
+   "label": "SQM"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Note"
+  },
+  {
+   "fieldname": "floor_no",
+   "fieldtype": "Data",
+   "label": "Floor No"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "CRM-CR-"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-03-21 20:58:55.138839",
+ "modified_by": "Administrator",
+ "module": "Unique Closets",
+ "name": "Customer Room",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "search_fields": "description,customer",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "description",
+ "track_changes": 1
+}

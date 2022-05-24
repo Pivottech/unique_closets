@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include unique_closets *.css
+recursive-include unique_closets *.csv
+recursive-include unique_closets *.html
+recursive-include unique_closets *.ico
+recursive-include unique_closets *.js
+recursive-include unique_closets *.json
+recursive-include unique_closets *.md
+recursive-include unique_closets *.png
+recursive-include unique_closets *.py
+recursive-include unique_closets *.svg
+recursive-include unique_closets *.txt
+recursive-exclude unique_closets *.pyc
