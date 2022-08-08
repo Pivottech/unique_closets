@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestWoodType(unittest.TestCase):
+class TestMaterial(unittest.TestCase):
 	pass

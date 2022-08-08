@@ -1,7 +1,9 @@
 from erpnext.projects.doctype.project.project import Project
 from erpnext.projects.doctype.task.task import Task
 from erpnext.selling.doctype.customer.customer import Customer
+from erpnext.selling.doctype.sales_order.sales_order import SalesOrder
 from unique_closets.unique_closets.utils import translate
+import json
 import frappe
 
 class UCProject(Project):
@@ -54,6 +56,16 @@ class UCCustomer(Customer):
         if not self.customer_name_in_english:
             self.customer_name_in_english = translate(self.customer_name)
 
+class UCSalesOrder(SalesOrder):
+    def get_rooms_from_sales_order_items(self):
+        rooms = []
+        for i in self.items:
+            if i.room:
+                rooms.append(i.room)
+        return rooms
+            
+
+        
 
 
 

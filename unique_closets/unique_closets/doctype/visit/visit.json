@@ -13,8 +13,8 @@
   "work_type",
   "workshop",
   "status",
-  "models_section",
-  "models"
+  "rooms_section",
+  "rooms"
  ],
  "fields": [
   {
@@ -30,7 +30,6 @@
    "options": "Customer"
   },
   {
-   "default": "Now",
    "fieldname": "date",
    "fieldtype": "Datetime",
    "label": "Appointment Date\\Time"
@@ -52,28 +51,28 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "models_section",
-   "fieldtype": "Section Break",
-   "label": "Models"
-  },
-  {
-   "fieldname": "models",
-   "fieldtype": "Table MultiSelect",
-   "label": "Models",
-   "options": "Visit Model"
-  },
-  {
    "fieldname": "work_type",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Work Type",
    "options": "Work Type",
    "reqd": 1
+  },
+  {
+   "fieldname": "rooms_section",
+   "fieldtype": "Section Break",
+   "label": "Rooms"
+  },
+  {
+   "fieldname": "rooms",
+   "fieldtype": "Table MultiSelect",
+   "label": "Rooms",
+   "options": "Visit Room"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-19 16:02:23.714685",
+ "modified": "2022-06-26 15:14:41.156488",
  "modified_by": "Administrator",
  "module": "Unique Closets",
  "name": "Visit",

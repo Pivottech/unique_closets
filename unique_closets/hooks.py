@@ -32,6 +32,7 @@ app_license = "MIT"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Sales Order" : "public/js/sales_order.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -85,6 +86,7 @@ override_doctype_class = {
 	"Project": "unique_closets.overrides.UCProject",
 	"Task": "unique_closets.overrides.UCTask",
 	"Customer": "unique_closets.overrides.UCCustomer",
+	"Sales Order": "unique_closets.overrides.UCSalesOrder"
 }
 
 # Document Events

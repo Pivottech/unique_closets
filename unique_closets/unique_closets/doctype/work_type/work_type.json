@@ -7,7 +7,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "type"
+  "type",
+  "room_dependency"
  ],
  "fields": [
   {
@@ -17,11 +18,17 @@
    "label": "Type",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "room_dependency",
+   "fieldtype": "Check",
+   "label": "Room Dependency"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-19 15:59:52.944222",
+ "modified": "2022-06-26 12:33:03.863138",
  "modified_by": "Administrator",
  "module": "Unique Closets",
  "name": "Work Type",
