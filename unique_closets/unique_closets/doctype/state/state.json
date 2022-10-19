@@ -1,30 +1,45 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:depth",
- "creation": "2021-11-23 16:02:54.274725",
+ "autoname": "format:{state_name} {state_name_ar}",
+ "creation": "2022-09-20 13:50:02.272211",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "depth"
+  "state_name",
+  "state_name_ar",
+  "country"
  ],
  "fields": [
   {
-   "fieldname": "depth",
+   "fieldname": "state_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Depth",
-   "reqd": 1,
-   "unique": 1
+   "label": "State Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state_name_ar",
+   "fieldtype": "Data",
+   "label": "State Name Ar"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Country",
+   "options": "Country",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-11-23 16:02:54.274725",
+ "modified": "2022-09-20 15:24:50.795237",
  "modified_by": "Administrator",
  "module": "Unique Closets",
- "name": "Depth",
+ "name": "State",
  "owner": "Administrator",
  "permissions": [
   {
@@ -41,6 +56,5 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "DESC",
- "track_changes": 1
+ "sort_order": "DESC"
 }

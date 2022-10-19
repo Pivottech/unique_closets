@@ -8,15 +8,24 @@ frappe.ui.form.on('Sales Order', {
         edit_btn.addClass("btn btn-xs btn-secondary grid-add-row");
         edit_btn.css({"margin-right": "4px", "display": "inline-block"});
         frm.fields_dict.items.$wrapper.on('click', '.grid-row-check', (e) => {
-            if(frm.get_selected()["items"]){
-                edit_btn[0].innerHTML = "Edit Item";
-            }
-            else{
-                edit_btn[0].innerHTML = "Create Item";
-                frm.set_df_property("create_item", "label", "Create Item");
-            }
+            refresh_item_grid(frm, edit_btn);
         });
+        frm.fields_dict.items.$wrapper.on('click', '.grid-remove-rows', (e) => {
+            refresh_item_grid(frm, edit_btn);
+        });
+
     },
+
+    shipping_address_name: function(frm){
+        if(frm.doc.shipping_address_name){
+            frappe.db.get_value("Address", frm.doc.shipping_address_name, "city_doc").then(value=>{
+
+            });
+        }
+
+
+    },
+
     create_item: function (frm) {
         var selected_items = frm.get_selected()["items"];
         if(selected_items){
@@ -33,7 +42,8 @@ frappe.ui.form.on('Sales Order', {
 	            {
 	                label: "Full Name",
 	                fieldtype: "Data",
-	                fieldname: "customer_name"
+	                fieldname: "customer_name",
+                    reqd: 1
 	            },
 	            {
 	                label: "Type",
@@ -41,7 +51,8 @@ frappe.ui.form.on('Sales Order', {
 	                fieldtype: "Select",
 	                translatable: 1,
 	                options: ["Company", "Individual"],
-	                default: "Individual"
+	                default: "Individual",
+                    reqd: 1
 	            },
 	            {
 	                label: "Customer Group",
@@ -49,7 +60,8 @@ frappe.ui.form.on('Sales Order', {
 	                fieldtype: "Link",
 	                translatable: 1,
 	                options: "Customer Group",
-	                default: "Individual"
+	                default: "Individual",
+                    reqd: 1
 	            },
 	            {
 	                label: "Territory",
@@ -57,7 +69,8 @@ frappe.ui.form.on('Sales Order', {
 	                fieldtype: "Link",
 	                options: "Territory",
 	                translatable: 1,
-	                default: "Saudi Arabia"
+	                default: "Saudi Arabia",
+                    reqd: 1
 	            },
 	            {
 	                fieldtype: "Section Break",
@@ -66,7 +79,10 @@ frappe.ui.form.on('Sales Order', {
 	            {
 	                label: "Mobile No",
 	                fieldname: "mobile_no",
-	                fieldtype: "Data"
+	                fieldtype: "Data",
+                    default: "+966",
+                    options: "phone",
+                    reqd: 1
 	            },
 	            {
 	                fieldtype: "Column Break"
@@ -74,7 +90,8 @@ frappe.ui.form.on('Sales Order', {
 	            {
 	                label: "Email Id",
 	                fieldname: "email_id",
-	                fieldtype: "Data"
+	                fieldtype: "Data",
+                    options: "email"
 	            },
 	            {
 	                fieldtype: "Section Break",
@@ -83,22 +100,27 @@ frappe.ui.form.on('Sales Order', {
 	            {
 	                label: "State",
 	                fieldname: "state",
-	                fieldtype: "Data",
+	                fieldtype: "Link",
+                    options: "State",
 	                translatable: 1,
-	                default: "Riyadh State",
+	                default: "Riyadh Region",
+                    reqd: 1
 	            },
 	            {
 	                label: "City",
 	                fieldname: "city",
-	                fieldtype: "Data",
+	                fieldtype: "Link",
 	                translatable: 1,
-	                default: "Riyadh",
+                    options: "City",
+	                default: "Al-Riyadh الرياض",
+                    reqd: 1
 	            },
 	            {
 	                label: "District",
 	                fieldname: "district",
 	                fieldtype: "Link",
-	                options: "District"
+	                options: "District",
+                    reqd: 1
 	            },
                 {
 	                label: "Address Category",
@@ -107,16 +129,19 @@ frappe.ui.form.on('Sales Order', {
                     translatable: 1,
 	                options: ["Appartment","Villa","Compound","Palace"],
 	                default: "Appartment",
+                    reqd: 1
                 },
 	            {
-	                label: "ZIP Code",
+	                label: "Postal Code",
 	                fieldname: "pincode",
 	                fieldtype: "Data",
+                    reqd: 1
 	            },
 	            {
 	                label: "Building Number",
 	                fieldname: "building_number",
 	                fieldtype: "Data",
+                    reqd: 1
 	            },
 	            {
 	                fieldtype: "Column Break"
@@ -127,23 +152,35 @@ frappe.ui.form.on('Sales Order', {
 	                fieldtype: "Link",
 	                options: "Country",
 	                translatable: 1,
-	                default: "Saudi Arabia"
+	                default: "Saudi Arabia",
+                    reqd: 1
 	            },
 	            {
-	                label: "Address Line1",
+	                label: "Street Name",
 	                fieldname: "address_line1",
-	                fieldtype: "Small Text",
+	                fieldtype: "Data",
+                    reqd: 1
 	            },
 	            {
-	                label: "Address Line2",
+	                label: "Near By",
 	                fieldname: "address_line2",
-	                fieldtype: "Small Text",
+	                fieldtype: "Data",
 	            },
 	            {
 	                label: "Unite Number",
 	                fieldname: "unite_number",
 	                fieldtype: "Data",
 	            },
+                {
+	                label: "Floor Number",
+	                fieldname: "floor_no",
+	                fieldtype: "Int",
+	            },
+                {
+                    label: "Location Url",
+                    fieldtype: "Data",
+                    fieldname: "location_url"
+                },
 	            {
 	                fieldtype: "Section Break"
 	            },
@@ -203,13 +240,17 @@ frappe.ui.form.on('Sales Order', {
 	                    address_line1: values.address_line1,
 	                    address_line2: values.address_line2,
 	                    city: values.city,
+                        city_doc: values.city,
 	                    pincode: values.pincode,
 	                    state: values.state,
+                        state_doc: values.state,
 	                    country: values.country,
 	                    address_title: customer.name,
 	                    address_category: values.address_category,
 	                    building_number :values.building_number,
 	                    unite_number :values.unite_number,
+                        floor_no: values.floor_no,
+                        location_url: values.location_url,
 	                    district: values.district,
 	                    links: [{
 	                        link_doctype: "Customer",
@@ -217,24 +258,27 @@ frappe.ui.form.on('Sales Order', {
 	                        link_title: doc.customer_name
 	                        }]
 	                    }).then(add =>{
-	                        values.rooms.forEach(room =>{
-    	                        frappe.db.insert({
-        	                        doctype: "Customer Room",
-        	                        address: add.name,
-        	                        customer: doc.name,
-        	                        paint_color: room.paint_color,
-        	                        description: room.description,
-        	                        length: room.length,
-        	                        width: room.width,
-        	                        height: room.height,
-        	                        floor_no: room.floor_no
-        	                        
-    	                        });
-	                        });
+                            if(values.rooms){
+                                values.rooms.forEach(room =>{
+                                    frappe.db.insert({
+                                        doctype: "Customer Room",
+                                        address: add.name,
+                                        customer: doc.name,
+                                        paint_color: room.paint_color,
+                                        description: room.description,
+                                        length: room.length,
+                                        width: room.width,
+                                        height: room.height,
+                                        floor_no: room.floor_no
+                                        
+                                    });
+                                });
+                            }
+                            d.hide();
 	                    });
 	                    frm.set_value("customer", doc.name);
 	                });
-	                d.hide();
+	                
 	            }
 	    });
 	    d.show();
@@ -283,8 +327,9 @@ frappe.ui.form.on('Sales Order', {
 
 
 frappe.ui.form.on("Sales Order Item",{
-    "material_gross": function(frm, cdt, cdn){
+    material_gross: function(frm, cdt, cdn){
         var row = locals[cdt][cdn];
+        row.rate = row.price_list_rate;
         row.rate *= (row.material_gross + 1);
         var comps = JSON.parse(row.component_json);
         var total = 0;
@@ -294,10 +339,62 @@ frappe.ui.form.on("Sales Order Item",{
         row.rate += total/row.qty;
         frm.refresh_field("items");
     },
-    "edit_model": function(frm, cdt, cdn){
+    edit_model: function(frm, cdt, cdn){
         create_item_dialog(frm, cdt, cdn);
     }
 });
+
+function calculate_sqm_cbm(dialog){
+    validate_dimensions(dialog);
+    //let item = dialog.get_value("item_code");
+    dialog.set_value("sqm",flt(dialog.get_value("width"))*flt(dialog.get_value("height"))/10000);
+    //if(dialog.get_value("sqm")){
+    //    dialog.set_value("free_items", get_components(item, dialog.get_value("sqm")));
+    //}
+    dialog.set_value("cbm", flt(dialog.get_value("width"))*flt(dialog.get_value("height"))*flt(dialog.get_value("depth"))/1000000);
+}
+function validate_dimensions(dialog){
+    frappe.db.get_value("Item", dialog.get_value("item_code"), ["width_range_from", "width_range_to",
+     "height_range_from", "height_range_to", "depth_range_from", "depth_range_to"])
+     .then(r =>{
+        let values = r.message;
+        let width = parseFloat(dialog.get_value("width"));
+        let height = parseFloat(dialog.get_value("height"));
+        let depth = parseFloat(dialog.get_value("depth"));
+        if(width && values.width_range_to &&
+             (width < parseFloat(values.width_range_from) ||
+              width > parseFloat(values.width_range_to))){
+            frappe.msgprint({
+                title: "Validation",
+                indicator: "orange",
+                message: __('Widht not in Item Width Range')
+            });
+            dialog.set_value("width", 0);
+            return;
+        }
+        
+        if(height && values.height_range_to &&(
+              height < parseFloat(values.height_range_from) ||
+              height > parseFloat(values.height_range_to))){
+            frappe.msgprint({
+                title: "Validation",
+                indicator: "orange",
+                message: __('Height not in Item Height Range')
+            });
+            dialog.set_value("height", 0);
+            return;
+        }
+        if(depth && (depth < parseFloat(values.depth_range_from) || depth > parseFloat(values.depth_range_to))){
+            frappe.msgprint({
+                title: "Validation",
+                indicator: "orange",
+                message: __('Depth not in Item Depth Range')
+            });
+            dialog.set_value("depth", null);
+            return;
+        }
+     });
+}
 function get_components(item_code, area){
     var str = "<h3>Free Items<h3>";
     frappe.call({
@@ -340,6 +437,14 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                 fieldname: "item_code",
                 fieldtype: "Link",
                 options: "Item",
+                get_query: function(){
+                    return {
+                        query: "unique_closets.queries.item_by_group_query",
+                        filters: {
+                            item_group_parent: "Custom Products"
+                        }
+                    }
+                },
                 change: function(){
                     if(d.get_value("item_code"))
                     {
@@ -368,14 +473,7 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                 fieldname: "width",
                 fieldtype: "Data",
                 default: 0,
-                change: ()=>{
-                   let item = d.get_value("item_code");
-                   d.set_value("sqm",flt(d.get_value("width"))*flt(d.get_value("height")));
-                   if(d.get_value("sqm")){
-                        d.set_value("free_items", get_components(item, d.get_value("sqm")));
-                   }
-                   d.set_value("cbm", flt(d.get_value("width"))*flt(d.get_value("height"))*flt(d.get_value("depth")));
-                }
+                change: ()=> calculate_sqm_cbm(d)
             },
             {
                 label: "CBM",
@@ -396,14 +494,7 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                 label: "Height",
                 fieldname: "height",
                 fieldtype: "Data",
-                change: ()=>{
-                   let item = d.get_value("item_code");
-                   d.set_value("sqm",flt(d.get_value("width"))*flt(d.get_value("height")));
-                   if(d.get_value("sqm")){
-                        d.set_value("free_items", get_components(item, d.get_value("sqm")));
-                   }
-                   d.set_value("cbm", flt(d.get_value("width"))*flt(d.get_value("height"))*flt(d.get_value("depth")));
-                }
+                change: ()=> calculate_sqm_cbm(d)
             },
             {
                 fieldtype: "Float",
@@ -431,11 +522,8 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
             {
                 label: "Depth",
                 fieldname: "depth",
-                fieldtype: "Link",
-                options: "Depth",
-                change: ()=>{
-                    d.set_value("cbm", flt(d.get_value("width"))*flt(d.get_value("height"))*flt(d.get_value("depth")));
-                }
+                fieldtype: "Float",
+                change: ()=> calculate_sqm_cbm(d)
             },
             {
                 label: "Price",
@@ -464,6 +552,12 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                     in_list_view: 1,
                     get_query: (doc)=>{
                         cur_dialog_idx = doc.idx -1;
+                        return {
+                            query: "unique_closets.queries.item_by_group_query",
+                            filters: {
+                                item_group_parent: "Components"
+                            }
+                        }
                     },
                     change: ()=>{
                         var row = d.fields_dict.components.df.data[cur_dialog_idx];
@@ -482,13 +576,8 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                                  doc: frm.doc
                             },
                             callback: function(r){
-                                items.df.data[cur_dialog_idx].price = r.message.price_list_rate;
-                                frappe.db.get_value("Item", row.item_code, "is_wooden").then(res => {
-                                    if (res.message.is_wooden){
-                                        items.df.data[cur_dialog_idx].material = d.get_value("material");
-                                        items.df.data[cur_dialog_idx].is_wooden = res.message.is_wooden;
-                                    }
-                                });
+                                items.df.data[cur_dialog_idx].price = r.message.price_list_rate;   
+                                items.df.data[cur_dialog_idx].material = d.get_value("material");
                                 d.set_value("componetns", items);
                                 items.grid.refresh();
                             }
@@ -506,12 +595,6 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                     fieldname: "price",
                     fieldtype: "Data",
                     in_list_view: 1
-                },
-                {
-                    label: "Is Wooden",
-                    fieldname: "is_wooden",
-                    fieldtype: "Check",
-                    hidden: 1
                 },
                 {
                     fieldtype: "Link",
@@ -560,7 +643,10 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
             if(values.components){
                 values.components.forEach(comp => comp_str += comp.item_code + ": "+ comp.qty+ "\n");
             }
-            let gross = (await frappe.db.get_value("Material", values.material, "gross_percent")).message.gross_percent;
+            let gross = 0;
+            if(values.material){
+                gross = (await frappe.db.get_value("Material", values.material, "gross_percent")).message.gross_percent;
+            }
             let row = null;
             if (cdt && cdn){
                 row = locals[cdt][cdn]
@@ -594,9 +680,9 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
             var components_total = 0;
             for(var i=0; i<components.length; i++){
                 var line_grosss = 1;
-                if(components[i].material && components[i].is_wooden){
+                /*if(components[i].material){
                     line_grosss += (await frappe.db.get_value("Material", components[i].material, "gross_percent")).message.gross_percent;
-                }
+                }*/
                 if (components[i].qty && components[i].price)
                     components_total += parseFloat(components[i].qty) * parseFloat(components[i].price)* parseFloat(line_grosss); 
             }
@@ -604,7 +690,10 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
             //item price
             var item_price = 0;
             if(d.get_value("cbm")){
-                var material_gross = (await frappe.db.get_value("Material", d.get_value("material"), "gross_percent")).message.gross_percent;
+                var material_gross = 0;
+                if(d.get_value("material")){
+                    material_gross = (await frappe.db.get_value("Material", d.get_value("material"), "gross_percent")).message.gross_percent;
+                }
                 item_price =  parseFloat(d.get_value("price")) * (parseFloat(material_gross) + 1) * parseFloat(d.get_value("cbm"));
             }
             d.set_value("item_price", item_price);
@@ -619,9 +708,11 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
         fields.forEach(f => {
             d.set_value(f, row[f]);
         });
+        row["rate"] = row["price_list_rate"];
+        d.set_value("price", row["price_list_rate"]);
         d.set_value("cbm", row["qty"]);
         d.set_value("row", row["idx"]);
-    }
+    }   
 
     var components_grid = d.fields_dict.components.grid;
     //add edit button for doors, shelfs and drawers details
@@ -644,11 +735,13 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                         fieldname: "width",
                         fieldtype: "Float",
                         label: "Width",
+                        change : () => validate_dimensions(cd)
                     },
                     {
                         fieldname: "height",
                         fieldtype: "Float",
                         label: "Height",
+                        change : () => validate_dimensions(cd)
                     }]);
             }
             if(value.message.has_sections){
@@ -666,7 +759,7 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                                 in_list_view: 1,
                                 change: function(){
                                     var grid_rows = cd.fields_dict.sections.grid.grid_rows
-                                    var total_area = parseFloat(cd.get_values().width) * parseFloat(cd.get_values().height);
+                                    var total_area = parseFloat(cd.get_values().width) * parseFloat(cd.get_values().height)/10000;
                                     for(var i=0; i<grid_rows.length; i++){
                                         grid_rows[i].doc.area = total_area * parseFloat(grid_rows[i].doc.coverage_percentage) /100;
                                         grid_rows[i].refresh();
@@ -699,10 +792,10 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                         fieldtype: "Section Break"
                     },
                     {
-                        fieldname: "color",
+                        fieldname: "material",
                         fieldtype: "Link",
                         options: "Material",
-                        label: "Color"
+                        label: "Material"
                     }
                 ]);
             }
@@ -782,6 +875,7 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                         args:{
                             sales_order: JSON.stringify(frm.doc),
                             item: selected_items[0].item_code,
+                            default_material: d.get_value("material"),
                             args: JSON.stringify(values)
                         },
                         freeze: 1,
@@ -807,6 +901,7 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
                         args:{
                             sales_order: JSON.stringify(frm.doc),
                             item: selected_items[0].item_code,
+                            default_material: d.get_value("material"),
                             args: JSON.stringify(values)
                         },
                         freeze: 1,
@@ -839,3 +934,16 @@ function create_item_dialog(frm, cdt = null, cdn = null) {
     });
     d.show();
 }
+
+function refresh_item_grid(frm , edit_btn){
+    if(frm.get_selected()["items"]){
+        edit_btn[0].innerHTML = "Edit Item";
+    }
+    else{
+        edit_btn[0].innerHTML = "Create Item";
+        frm.set_df_property("create_item", "label", "Create Item");
+    }
+    
+}
+
+

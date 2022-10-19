@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "district_name",
+  "district_name_ar",
   "city"
  ],
  "fields": [
@@ -25,11 +26,16 @@
    "in_standard_filter": 1,
    "label": "City",
    "reqd": 1
+  },
+  {
+   "fieldname": "district_name_ar",
+   "fieldtype": "Data",
+   "label": "District Name Ar"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-21 20:35:30.376031",
+ "modified": "2022-09-17 13:01:03.188408",
  "modified_by": "Administrator",
  "module": "Unique Closets",
  "name": "District",
@@ -48,6 +54,7 @@
    "write": 1
   }
  ],
+ "search_fields": "district_name_ar",
  "sort_field": "modified",
  "sort_order": "DESC",
  "title_field": "district_name",

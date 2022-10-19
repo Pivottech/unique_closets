@@ -63,6 +63,15 @@ class UCSalesOrder(SalesOrder):
             if i.room:
                 rooms.append(i.room)
         return rooms
+    
+    @frappe.whitelist()
+    def get_shipping_rule_by_shipping_address(self):
+        pass
+        #if self.shipping_address_name:
+        #    country , city = frappe.db.get_value("Address", shipping_address_name, ["country", "city"])
+        #    frappe.db.get_list("")
+
+
             
 
         

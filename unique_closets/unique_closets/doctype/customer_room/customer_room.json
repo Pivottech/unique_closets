@@ -93,12 +93,12 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Series",
-   "options": "CRM-CR-"
+   "options": "CUS-RM-"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-21 20:58:55.138839",
+ "modified": "2022-09-19 13:19:04.412506",
  "modified_by": "Administrator",
  "module": "Unique Closets",
  "name": "Customer Room",
@@ -118,7 +118,7 @@
   }
  ],
  "quick_entry": 1,
- "search_fields": "description,customer",
+ "search_fields": "description",
  "sort_field": "modified",
  "sort_order": "DESC",
  "title_field": "description",

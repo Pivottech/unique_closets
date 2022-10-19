@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:title",
  "creation": "2021-12-13 16:12:17.362306",
@@ -8,6 +9,7 @@
  "engine": "InnoDB",
  "field_order": [
   "title",
+  "material_type",
   "item_code",
   "item_name",
   "gross_percent"
@@ -42,11 +44,18 @@
    "label": "Item",
    "options": "Item",
    "reqd": 1
+  },
+  {
+   "fieldname": "material_type",
+   "fieldtype": "Link",
+   "label": "Material Type",
+   "options": "Material Type",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-12-15 14:44:14.057719",
+ "modified": "2022-10-03 15:44:56.193668",
  "modified_by": "Administrator",
  "module": "Unique Closets",
  "name": "Material",
@@ -66,6 +75,7 @@
    "write": 1
   }
  ],
+ "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

@@ -3,8 +3,9 @@ from frappe.utils import flt
 from erpnext.stock.get_item_details import get_price_list_rate_for
 import json
 
+
 @frappe.whitelist()
-def calculate_component_total(args, item, sales_order):
+def calculate_component_total(args, item, sales_order, default_material):
     args = json.loads(args)
     sales_order = json.loads(sales_order)
     base_price = 0
@@ -17,14 +18,17 @@ def calculate_component_total(args, item, sales_order):
     else: 
         base_price = get_price_list_rate_for({
             "item_code": item,
-            "price_list": "Standard Buying",
+            "price_list": "Standard Selling",
             "transaction_date": sales_order["transaction_date"],
             "customer": sales_order["customer"]
         }, item)
     #calc material
     if "material" in args:
         percent = frappe.db.get_value("Material", args["material"], "gross_percent") 
-        base_price *= flt(percent) 
+        base_price *= flt(percent)+1
+    elif default_material:
+        percent = frappe.db.get_value("Material", default_material, "gross_percent")
+        base_price *= flt(percent)+1
 
     # calc additions
     additional_items = []
@@ -43,13 +47,13 @@ def calculate_component_total(args, item, sales_order):
 def calculate_dimensions_total(sales_order ,item, width, height):
     sqm_item_price = get_price_list_rate_for({
         "item_code": item,
-        "price_list": "Standard Buying",
+        "price_list": "Standard Selling",
         "uom": "SQM",
         "transaction_date": sales_order["transaction_date"],
         "customer": sales_order["customer"]
     }, item)
     if sqm_item_price:
-        return flt(width) * flt(height) * sqm_item_price
+        return flt(width) * flt(height) /10000 * sqm_item_price
     else: 
         return 0
 
@@ -58,7 +62,7 @@ def calculate_additional_items(items, sales_order):
     for i in items:  
         item_price = get_price_list_rate_for({
             "item_code": i,
-            "price_list": "Standard Buying",
+            "price_list": "Standard Selling",
             "transaction_date": sales_order["transaction_date"],
             "customer": sales_order["customer"]
         }, i)
@@ -69,7 +73,8 @@ def calculate_sections_additions(base_price, sections):
     additionals = 0
     for section in sections:
         gross_percent = frappe.db.get_value("Material", section["material"], "gross_percent")
-        additionals += base_price * flt(section["coverage_percentage"]) * flt(gross_percent)
+        section_base_price = base_price * flt(section["coverage_percentage"])/100
+        additionals += section_base_price* (flt(gross_percent))
     return additionals
         
 
